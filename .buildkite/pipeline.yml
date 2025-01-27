@@ -11,6 +11,6 @@ steps:
            - label: "Notify slack about failing step"
              command: echo "The main step has failed!"
              notify:
-               - slack: "D089QF7KDR7"
+               - slack: "@amaury"
       YAML
       fi
