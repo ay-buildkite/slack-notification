@@ -1,10 +1,16 @@
 steps:
-  - label: echo This step will fail""
+  - label: "This step will fail"
     command: exit 1
     key: "main-step"  
+    plugins:
+      - docker#v5.7.0:
+        image: "ubuntu:22.04"
+
   - wait: ~
     continue_on_failure: true
-  - command: |
+
+  - label: "This step will pass"
+    command: |
       if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
          cat <<- YAML | buildkite-agent pipeline upload 
          steps:
@@ -14,3 +20,6 @@ steps:
                - slack: "D089QF7KDR7" 
       YAML
       fi
+    plugins:
+      - docker#v5.7.0:
+        image: "buildkite/agent:3"
