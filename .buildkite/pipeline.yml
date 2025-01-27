@@ -1,0 +1,45 @@
+steps:
+  # Test case 1: Passing step
+  - label: "Test Passing Step"
+    command: "exit 0"
+    key: "passing-step"
+
+  - wait: ~
+    continue_on_failure: true
+
+  - label: "Check Passing Notification"
+    command: |
+      echo "Checking passing step outcome..."
+      STEP_OUTCOME=$(buildkite-agent step get "outcome" --step "passing-step")
+      echo "Step outcome: $STEP_OUTCOME"
+      if [ "$STEP_OUTCOME" != "passed" ]; then
+        cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - notify:
+            - slack "@amaury"
+              message: "Test step failed! Check ${BUILDKITE_BUILD_URL}"
+        YAML
+      fi
+
+  # Test case 2: failing step
+  - label: "Test Failing Step"
+    command: "exit 1"
+    key: "failing-step"
+
+  - wait: ~
+    continue_on_failure: true
+
+  - label: "Check Failing Notification"
+    command: |
+      echo "Checking failing step outcome..."
+      STEP_OUTCOME=$(buildkite-agent step get "outcome" --step "failing-step")
+      echo "Step outcome: $STEP_OUTCOME"
+      if [ "$STEP_OUTCOME" != "passed" ]; then
+        cat <<- YAML | buikldkite-agent pipeline upload
+        steps:
+          - notify:
+            - slack: "@amaury"
+              message: "Test step failed! Check ${BUILDKITE_BUILD_URL}"
+        YAML
+      fi
+
