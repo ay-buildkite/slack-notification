@@ -10,4 +10,4 @@ if [[ -z "$value" ]]; then
 fi
 
 echo -n "$value" > output.txt
-echo "Generated value: $(cat output.txt)"
+echo -n "Generated value is $(cat output.txt)"
