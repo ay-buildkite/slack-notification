@@ -5,9 +5,9 @@ value=$(openssl rand -hex 12 2> /dev/null || date +%s | sha256sum | base64 | hea
 
 value=$(echo "$value" | tr -d '[:space:]')
 if [[ -z "$value" ]]; then
-  echo ":x: Error: Generate value is empty!"
+  echo "Error: Generate value is empty!"
   exit 1
 fi
 
 echo "$value" > output.txt
-echo "✅ Generated value: $(cat output.txt)"
+echo "Generated value: $(cat output.txt)"
