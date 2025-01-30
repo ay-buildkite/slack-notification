@@ -9,5 +9,5 @@ if [[ -z "$value" ]]; then
   exit 1
 fi
 
-echo "$value" > output.txt
+echo -n "$value" > output.txt
 echo "Generated value: $(cat output.txt)"
