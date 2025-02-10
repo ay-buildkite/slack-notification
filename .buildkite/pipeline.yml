@@ -3,10 +3,10 @@ steps:
   - label: echo This step will fail""
     command: exit 1
     key: main-step
-    notify:
-      - slack: '#general'
-        message: Hello I'm a custom success message
-        if: build.state == "passed"  # Triggers only on success
-      - slack: '#general'
-        message: Hello I'm a custom failed message
-        if: build.state == "failed"  # Triggers only on failure
+notify:
+  - slack: '#general'
+    message: Hello I'm a custom success message
+    if: build.state == "passed"  # Triggers only on success
+  - slack: '#general'
+    message: Hello I'm a custom failed message
+    if: build.state == "failed"  # Triggers only on failure
