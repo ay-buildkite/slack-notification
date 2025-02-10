@@ -3,6 +3,8 @@ steps:
   - label: FAIL
     command: exit 1
     key: main-step
+    soft_fail:
+      - exit_status: 1
   - label: ':bell: :hammer: Build a notify pipeline'
     depends_on: main-step
     command: |-
