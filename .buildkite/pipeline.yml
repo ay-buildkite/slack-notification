@@ -28,7 +28,9 @@ steps:
   #     YAML
   #     fi
 notify:
-  - slack: '@amaury'
-    if: build.state == "passed"
-  - slack: '@amaury'
-    if: build.state == "failed"
+  - slack: "@amaury"
+      message: "Hello I'm a custom success message"
+      if: build.state == "passed"
+  - slack: "@amaury"
+      message: "Hello I'm a custom failed message"
+      if: build.state == "failed"
