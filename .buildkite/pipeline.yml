@@ -10,6 +10,8 @@ steps:
     command: |-
       if [ $$(buildkite-agent step get "outcome" --step "main-step") == "failed" ]; then
         cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - command: echo "I'm broken."
         notify:
           - slack: 
               channels: ['@amaury']
@@ -17,6 +19,8 @@ steps:
       YAML
       else
         cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - command: echo "I'm not broken."
         notify:
           - slack: 
               channels: ['@amaury']
