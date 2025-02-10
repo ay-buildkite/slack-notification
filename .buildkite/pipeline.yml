@@ -4,7 +4,7 @@ steps:
     command: exit 1
     key: main-step
   - label: ':bell: :hammer: Build a notify pipeline'
-    depends_on: main_step
+    depends_on: main-step
     command: |-
       if [ $$(buildkite-agent step get "outcome" --step "fail") == "failed" ]; then
         cat <<- YAML | buildkite-agent pipeline upload
@@ -20,6 +20,6 @@ steps:
           - label: ":tada: WIN"
             notify:
             - slack: '@amaury'
-              message: "Look, mommy! I made a devops!"
+              message: "Not failing is good enough. "
       YAML
       fi
