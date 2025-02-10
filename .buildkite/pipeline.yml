@@ -1,18 +1,12 @@
+---
 steps:
   - label: echo This step will fail""
     command: exit 1
-    key: "main-step"  
-  - wait: ~
-    continue_on_failure: true
-  - command: |
-      if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
-         cat <<- YAML | buildkite-agent pipeline upload 
-         steps:
-           - label: "Notify slack about failing step"
-             command: echo "The main step has failed!"
-             notify:
-               - slack:
-                 channels:
-                   - "@amaury"
-      YAML
-      fi
+    key: main-step
+    notify:
+      - slack: '#general'
+        message: Hello I'm a custom success message
+        if: build.state == "passed"  # Triggers only on success
+      - slack: '#general'
+        message: Hello I'm a custom failed message
+        if: build.state == "failed"  # Triggers only on failure
