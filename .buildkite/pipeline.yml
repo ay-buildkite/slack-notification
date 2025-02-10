@@ -12,12 +12,12 @@ steps:
         cat <<- YAML | buildkite-agent pipeline upload
         notify:
           - slack: '@amaury'
-              message: "You have failed me."
+            message: "You have failed me."
       YAML
       else
         cat <<- YAML | buildkite-agent pipeline upload
         notify:
           - slack: '@amaury'
-              message: "Not failing is good enough. "
+            message: "Not failing is good enough. "
       YAML
       fi
