@@ -8,7 +8,7 @@ steps:
   - label: ':bell: :hammer: Build a notify pipeline'
     depends_on: main-step
     command: |-
-      if [ $$(buildkite-agent step get "outcome" --step "main-step") == "failed" ]; then
+      if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
         cat <<- YAML | buildkite-agent pipeline upload
         steps:
           - command: echo "I'm broken."
@@ -20,7 +20,7 @@ steps:
       else
         cat <<- YAML | buildkite-agent pipeline upload
         steps:
-          - command: echo "I'm not broken."
+          - command: echo "I didn't pass."
         notify:
           - slack: 
               channels: ['@amaury']
