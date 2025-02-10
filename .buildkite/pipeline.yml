@@ -28,11 +28,9 @@ steps:
   #     YAML
   #     fi
 notify:
-  - slack:
-      channels: ['@amaury']
-      message: PASSED
+  - slack: "@amaury"
+      message: "PASSED"
     if: build.state == "passed"
-  - slack:
-      channels: ['@amaury']
-      message: PASSED.... NOT!
+  - slack: "@amaury"
+      message: "PASSED.... NOT!"
     if: build.state == "failed"
