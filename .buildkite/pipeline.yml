@@ -1,6 +1,6 @@
 ---
 steps:
-  - label: FAIL
+  - label: ":skull: I'm a failure."
     command: exit 1
     key: main-step
     soft_fail:
@@ -8,7 +8,7 @@ steps:
   - label: ':bell: :hammer: Build a notify pipeline'
     depends_on: main-step
     command: |-
-      if [ $$(buildkite-agent step get "outcome" --step "fail") == "failed" ]; then
+      if [ $$(buildkite-agent step get "outcome" --step "main-step") == "failed" ]; then
         cat <<- YAML | buildkite-agent pipeline upload
         notify:
           - slack: '@amaury'
