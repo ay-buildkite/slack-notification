@@ -31,8 +31,8 @@ notify:
   - slack:
       channels: ['@amaury']
       message: PASSED
-      if: build.state == "passed"
+    if: build.state == "passed"
   - slack:
       channels: ['@amaury']
       message: PASSED.... NOT!
-      if: build.state == "failed"
+    if: build.state == "failed"
