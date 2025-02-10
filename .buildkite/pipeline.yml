@@ -31,8 +31,10 @@ notify:
   - slack:
       channels: ['@amaury']
       message: Hello I'm a custom success message
+    email: [amaury@buildkite.com]
     if: build.state == "passed"
   - slack:
       channels: ['@general']
       message: Hello I'm a custom failed message
+    email: [amaury@buildkite.com]
     if: build.state == "failed"
