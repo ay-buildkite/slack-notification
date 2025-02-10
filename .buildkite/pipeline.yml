@@ -27,3 +27,12 @@ steps:
               message: "Not failing is good enough."
       YAML
       fi
+notify:
+  - slack:
+      channels: ['@amaury']
+      message: Hello I'm a custom success message
+    if: build.state == "passed"
+  - slack:
+      channels: ['@general']
+      message: Hello I'm a custom failed message
+    if: build.state == "failed"
