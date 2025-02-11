@@ -1,17 +1,10 @@
 ---
-agents:
-  queue: macos-local
 notify:
-  - slack:
-      channels: ['@amaury']
-      message: PASSED
-    if: build.state == "passed"
-  - slack:
-      channels: ['@amaury']
-      message: PASSED.... NOT!
-    if: build.state == "failed"
   # Basic syntax - single user notification using Slack Workspace service
   - slack: U088X8KCQS3
+    message: You shall not pass.
+    soft_fail:
+      error_status: '*'
   # Array syntax - multiple channels/users using Slack Workspace service
   - slack:
       channels: [U088X8KCQS3, builkite#test-slack-notifications]
@@ -23,9 +16,12 @@ notify:
 steps:
   - label: Test basic syntax.
     command: echo "1st step using Slack service."
+    soft_fail:
+      error_status: '*'
     notify:
       # Basic syntax for step notification
       - slack: '@amaury'  # Using Slack service (user handle)
+        message: You shall not pass
   - label: Test extended syntax.
     command: echo "2nd step using Slack service."
       # Extended syntax for step notifications
@@ -33,29 +29,3 @@ steps:
       - slack:
           channels: [U088X8KCQS3, buildkite#test-slack-notifications]
           message: 'Message attribute: 2nd step using Slack service.'
-  - label: ":skull: I'm a failure."
-    command: exit 1
-    key: main-step
-    soft_fail:
-      - exit_status: 1
-  - label: ':bell: :hammer: Build a notify pipeline'
-    depends_on: main-step
-    command: |-
-      if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
-        cat <<- YAML | buildkite-agent pipeline upload
-        steps:
-          - command: echo "I'm broken."
-        notify:
-          - slack: '@amaury'
-              message: "I'm not using the channels key."
-      YAML
-      else
-        cat <<- YAML | buildkite-agent pipeline upload
-        steps:
-          - command: echo "I didn't pass."
-        notify:
-          - slack: 
-              channels: ['@amaury']
-              message: "I'm using the channels key."
-      YAML
-      fi
