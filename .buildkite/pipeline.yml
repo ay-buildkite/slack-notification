@@ -1,40 +1,29 @@
 ---
 agents:
   queue: macos-local
-steps:
-  - label: ":skull: I'm a failure."
-    command: exit 1
-    key: main-step
-    soft_fail:
-      - exit_status: 1
-  - label: ':bell: :hammer: Build a notify pipeline'
-    depends_on: main-step
-    command: |-
-      if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
-        cat <<- YAML | buildkite-agent pipeline upload
-        steps:
-          - command: echo "I'm broken."
-        notify:
-          - slack: 
-              channels: ['@amaury']
-              message: "You have failed me."
-      YAML
-      else
-        cat <<- YAML | buildkite-agent pipeline upload
-        steps:
-          - command: echo "I didn't pass."
-        notify:
-          - slack: 
-              channels: ['@amaury']
-              message: "Not failing is good enough."
-      YAML
-      fi
+# U088X8KCQS3
+# Pipeline-level (build) notifications
 notify:
+  # Basic syntax - single user notification using Slack Workspace service
+  - slack: U088X8KCQS3
+  # Array syntax - multiple channels/users using Slack Workspace service
   - slack:
-      channels: ['@amaury']
-      message: PASSED
-    if: build.state == "passed"
+      channels: [U088X8KCQS3, builkite#test-slack-notifications]
+  # Extended syntax - Multiple channels with message
   - slack:
-      channels: ['@amaury']
-      message: PASSED.... NOT!
-    if: build.state == "failed"
+      channels: [U088X8KCQS3, buildkite#test-slack-notifications]
+      message: 'Build status update: ${BUILDKITE_BUILD_STATE}'
+# Step-level notifications exmaples
+steps:
+  - label: Test basic syntax.
+    command: echo "Running basic syntax test"
+    notify:
+      # Basic syntax for step notification
+      - slack: '@amaury'  # Using Slack service (user handle)
+  - label: Test extended syntax.
+    command: echo "Testing extended syntax"
+      # Extended syntax for step notifications
+    notify:
+      - slack:
+          channels: [U088X8KCQS3, buildkite#test-slack-notifications]
+          message: 'Test extended syntax: ${BUILDKITE_COMMAND_EXIT_STATUS}'
