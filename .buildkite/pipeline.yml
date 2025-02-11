@@ -2,7 +2,6 @@
 notify:
   # Basic syntax - single user notification using Slack Workspace service
   - slack: U088X8KCQS3
-    message: You shall not pass.
     soft_fail:
       error_status: '*'
   # Array syntax - multiple channels/users using Slack Workspace service
