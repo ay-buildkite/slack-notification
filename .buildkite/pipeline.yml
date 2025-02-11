@@ -1,36 +1,40 @@
 ---
+agents:
+  queue: macos-local
 steps:
   - label: ":skull: I'm a failure."
     command: exit 1
     key: main-step
     soft_fail:
       - exit_status: 1
-  # - label: ':bell: :hammer: Build a notify pipeline'
-  #   depends_on: main-step
-  #   command: |-
-  #     if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
-  #       cat <<- YAML | buildkite-agent pipeline upload
-  #       steps:
-  #         - command: echo "I'm broken."
-  #       notify:
-  #         - slack: 
-  #             channels: ['@amaury']
-  #             message: "You have failed me."
-  #     YAML
-  #     else
-  #       cat <<- YAML | buildkite-agent pipeline upload
-  #       steps:
-  #         - command: echo "I didn't pass."
-  #       notify:
-  #         - slack: 
-  #             channels: ['@amaury']
-  #             message: "Not failing is good enough."
-  #     YAML
-  #     fi
+  - label: ':bell: :hammer: Build a notify pipeline'
+    depends_on: main-step
+    command: |-
+      if [ $$(buildkite-agent step get "outcome" --step "main-step") != "passed" ]; then
+        cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - command: echo "I'm broken."
+        notify:
+          - slack: 
+              channels: ['@amaury']
+              message: "You have failed me."
+      YAML
+      else
+        cat <<- YAML | buildkite-agent pipeline upload
+        steps:
+          - command: echo "I didn't pass."
+        notify:
+          - slack: 
+              channels: ['@amaury']
+              message: "Not failing is good enough."
+      YAML
+      fi
 notify:
-  - slack: "@amaury"
-      message: "PASSED"
+  - slack:
+      channels: ['@amaury']
+      message: PASSED
     if: build.state == "passed"
-  - slack: "@amaury"
-      message: "PASSED.... NOT!"
+  - slack:
+      channels: ['@amaury']
+      message: PASSED.... NOT!
     if: build.state == "failed"
