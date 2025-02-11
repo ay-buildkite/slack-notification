@@ -20,7 +20,7 @@ steps:
     notify:
       # Basic syntax for step notification
       - slack: '@amaury'  # Using Slack service (user handle)
-        message: You shall not pass
+          message: You shall not pass
   - label: Test extended syntax.
     command: echo "2nd step using Slack service."
       # Extended syntax for step notifications
