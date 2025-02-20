@@ -1,7 +1,7 @@
 notify:
   - slack:
       channels: [U088X8KCQS3, buildkite#test-slack-notifications]
-    if: build.event == "start"  # Trigger on build start
+    if: build.event == "started"  # Trigger on build start
   - slack:
       channels: [U088X8KCQS3, buildkite#test-slack-notifications]
     if: build.state == "passed" || build.state == "failed"  # Pass/fail notifications
